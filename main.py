@@ -54,3 +54,24 @@ def appendData(data):
         print(err)
     print('Data Inserted')
     
+def deleteData(line):
+    database = readData()
+    database.drop(line)
+    data = data.to_json('allDataBills.json')
+    print('Data deleted')
+
+def modifyngData(data):
+    database = readData()
+    database.update(data)
+
+# dataBills = [{
+#         "item":"Energetico",
+#         "valor":"10,90",
+#         "cartao":"XP Credit Card",
+#         "dia":"27/12/2022",
+#         "parcelas":"1",
+#         "snapshot":datetime.datetime.now()
+#         }]
+# df = pd.DataFrame(dataBills)
+# appendData(df)
+# print(readData())
