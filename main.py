@@ -1,25 +1,23 @@
 import os
 import datetime
 import pandas as pd
-from email.message import EmailMessage
-import smtplib
-import PySimpleGUI as sg
 import json
 
-
-def firstData():
+#If is you a first time in the system
+def firstData() -> str:
     #Create a directory 
-    os.chdir(r'C:')
+    os.chdir(r'C:\\')
     if os.path.isdir("payBills"):
-        if os.path.isdir("payBills\allDataBills.json"):
-            return False
-        return os.path.abspath('\.')
+        os.chdir(r'C:\\payBills')
+        for archives in os.listdir():
+            if archives == 'allDataBills.json':
+                return 'Already exist'
     else:
-        return True
+        print('Creating Diretory')
         os.mkdir("payBills")
-
     #Make a Json archive with the colunms and where all the data is saved
-    with open('allDataBills.json','w') as archive:
+    print('Creating json data')
+    with open('allDataBills.json','a+') as archive:
         dataBills = [{
         "item":"",
         "valor":"",
@@ -27,9 +25,32 @@ def firstData():
         "dia":"",
         "parcelas":"",
         "snapshot":""
-    }]
+        }]
         archive.write(json.dumps(dataBills))
+    return 'Database Created'
 
-print(firstData())
+#Read all the data, if you dont have, creaating is automatic
+def readData():
+    # dataBase = pd.DataFrame
+    #Try Except for prevent the error of dont existing archive data
+    try:
+        os.chdir(r'C:\\payBills')
+        dataBase = pd.read_json('allDataBills.json')
+
+    except (FileNotFoundError,ValueError) as err:
+        print(err)
+        print('You dont have the archive. Creating...')
+        print(firstData())
     
+    return dataBase
+
+def appendData(data):
+    os.chdir(r'C:\\payBills')
+    try:
+        database = readData()
+        data = pd.concat([database,data],ignore_index=True)
+        data = data.to_json('allDataBills.json')
+    except Exception as err:
+        print(err)
+    print('Data Inserted')
     
