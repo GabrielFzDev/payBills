@@ -63,6 +63,8 @@ def deleteData(line):
 def modifyngData(data):
     database = readData()
     database.update(data)
+    data = data.to_json('allDataBills.json')
+    print('Data Modified')
 
 # dataBills = [{
 #         "item":"Energetico",
