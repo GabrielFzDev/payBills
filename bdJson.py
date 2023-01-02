@@ -82,4 +82,3 @@ def modifyngData(data):
 # axies = plt.axes(ax)
 # axies.set_facecolor("#1c1e23")
 # # plt.savefig('grafico.png')    
-# plt.show()
