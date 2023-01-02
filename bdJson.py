@@ -2,6 +2,7 @@ import os
 import datetime
 import pandas as pd
 import json
+import matplotlib.pyplot as plt
 
 #If is you a first time in the system
 def firstData() -> str:
@@ -69,14 +70,16 @@ def modifyngData(data):
     data = data.to_json('allDataBills.json')
     print('Data Modified')
 
-# dataBills = [{
-#         "item":"Energetico",
-#         "valor":"10,90",
-#         "cartao":"XP Credit Card",
-#         "dia":"27/12/2022",
-#         "parcelas":"1",
-#         "snapshot":datetime.datetime.now()
-#         }]
-# df = pd.DataFrame(dataBills)
-# appendData(df)
-# print(readData())
+# df = readData()
+# figure = plt.figure(facecolor='#1c1e23')
+# figure.set_facecolor('#1c1e23')
+
+# plt.figure(0,facecolor="#1c1e23")
+# plt.yticks(color='#ffff')
+# plt.xticks(color='#ffff')
+# ax = plt.gca()
+# df.plot(kind='line', x='dia', y='valor', color='red', ax=ax, figsize=(10,6))
+# axies = plt.axes(ax)
+# axies.set_facecolor("#1c1e23")
+# # plt.savefig('grafico.png')    
+# plt.show()

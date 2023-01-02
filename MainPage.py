@@ -3,6 +3,8 @@ import datetime
 import os
 import bdJson as bd
 import pandas as pd
+import matplotlib.pyplot as plt
+
 
 def timeNow():
     return datetime.datetime.strftime(datetime.datetime.now(),'%d/%m/%y')
@@ -27,6 +29,14 @@ def popupParcelas():
     window.close()
     return values
 
+def forEachDay():
+    df = bd.readData()
+    df = df['valor'].sum()
+    daysPass = datetime.datetime.strftime(datetime.datetime.now(),'%d')
+
+    return df / int(daysPass)
+
+print(forEachDay())
 #Variaveis usadas
 allData = tableFormat()
 #Tema da Janela
@@ -67,9 +77,31 @@ tableValues = [
     [sg.Button('Modify',size=(20,1),button_color='#23211c'),sg.Button('Delete',key='deleteLine',enable_events=True,size=(20,1),button_color='#231c21')]
 ]
 
-#Layout final com um separador
-layout = [
+metas = [
+    [sg.Text("Meta de 30 reais por dia",auto_size_text=True,font='ARIAL 20',text_color='#ffffff')],
+    [sg.Text(f"Gasto por dia: {forEachDay()}",auto_size_text=True,font='ARIAL 12',text_color='#ffffff')]
+]
+
+#Layout do CRUD final com um separador
+layoutCRUD = [
     [sg.Column(newValues),sg.VSeparator(),sg.Column(tableValues)],
+]
+
+#Layout de Insigths com separador
+layoutInsigths = [
+    [sg.Column(metas)]
+]
+
+layout = [
+    
+    [
+        sg.TabGroup([
+            [ 
+                sg.Tab('Compras',layoutCRUD),
+                sg.Tab('Insigths',layoutInsigths)
+            ]
+        ],key='-TAB GROUP-', expand_x=True, expand_y=True)
+    ]
 ]
 
 window = sg.Window("",layout)
@@ -109,5 +141,4 @@ while True:
         allData = tableFormat()
         window['table'].update(allData['data'])
     print(event,values)
-    
 window.close()
