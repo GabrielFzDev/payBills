@@ -44,6 +44,7 @@ def readData():
     
     return dataBase
 
+#Para dar append tem q ser um dataframe
 def appendData(data):
     os.chdir(r'C:\\payBills')
     try:

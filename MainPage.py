@@ -50,6 +50,7 @@ newValues = [
     [sg.Text('Parcelas',font='Arial')],
     [sg.Radio('Sim',key='PopUpParcelas',group_id='RadioParcelas',enable_events=True),sg.Radio('Nao',key='ParcelasNao',group_id='RadioParcelas',enable_events=True)],
 
+    [sg.Button('Inserir',key='Submit',enable_events=True)]
 ]
 
 tableValues = [
@@ -67,8 +68,20 @@ while True:
     if event == "Exit" or event == sg.WIN_CLOSED:
         break
     if event == 'PopUpParcelas':
-        popup_prediction('industry', 'observation')
+        parcelas = popupParcelas()
+        parcelas = parcelas['InputParcelas']
     if event == 'parcelasNao':
-        parcela = 1
+        parcelas = 1
+    if event == 'Submit':
+        df = {
+        'item':values['inputItem'],
+        'valor':values['SpinNumberValue'],
+        'cartao':values['Cards'],
+        'dia':values['dia'],
+        'parcelas':parcelas,
+        'snapshot':datetime.datetime.now()
+        }
+        bd.appendData(pd.DataFrane(df))
     print(event,values)
+    
 window.close()
