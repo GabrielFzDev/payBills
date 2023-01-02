@@ -70,18 +70,18 @@ while True:
     if event == 'PopUpParcelas':
         parcelas = popupParcelas()
         parcelas = parcelas['InputParcelas']
-    if event == 'parcelasNao':
+    if event == 'ParcelasNao':
         parcelas = 1
     if event == 'Submit':
         df = {
         'item':values['inputItem'],
         'valor':values['SpinNumberValue'],
         'cartao':values['Cards'],
-        'dia':values['dia'],
+        'dia':values['-IN2-'],
         'parcelas':parcelas,
         'snapshot':datetime.datetime.now()
         }
-        bd.appendData(pd.DataFrane(df))
+        bd.appendData(pd.DataFrame(df))
     print(event,values)
     
 window.close()
