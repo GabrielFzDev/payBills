@@ -29,14 +29,19 @@ def popupParcelas():
     window.close()
     return values
 
-def forEachDay():
+def totalValue():
     df = bd.readData()
     df = df['valor'].sum()
-    daysPass = datetime.datetime.strftime(datetime.datetime.now(),'%d')
 
-    return df / int(daysPass)
+    return df
 
-print(forEachDay())
+def forEach(column):
+    df = bd.readData()
+    df = df[[column,'valor']].groupby(column).sum().sort_values(by='valor',ascending=False)
+    df = df.to_dict(orient='split')
+    
+    return f'{df["index"][0]}: {df["data"][0][0]}\n{df["index"][1]}: {df["data"][1][0]}'
+
 #Variaveis usadas
 allData = tableFormat()
 #Tema da Janela
@@ -79,7 +84,11 @@ tableValues = [
 
 metas = [
     [sg.Text("Meta de 30 reais por dia",auto_size_text=True,font='ARIAL 20',text_color='#ffffff')],
-    [sg.Text(f"Gasto por dia: {forEachDay()}",auto_size_text=True,font='ARIAL 12',text_color='#ffffff')]
+    [sg.Text(f"Gasto por dia: {totalValue() / int(datetime.datetime.strftime(datetime.datetime.now(),'%d'))}\n",auto_size_text=True,font='ARIAL 12',text_color='#ffffff')],
+    [sg.HSeparator()],
+    [sg.Text(f"\nCartões com mais gastos\n{forEach('cartao')}",auto_size_text=True,font='ARIAL 12',text_color='#ffffff')],
+    [sg.Text(f"\nLojas com mais gastos\n{forEach('item')}",auto_size_text=True,font='ARIAL 12',text_color='#ffffff')],
+    [sg.Text(f"\nGasto Total\n{totalValue()}",auto_size_text=True,font='ARIAL 12',text_color='#ffffff')]
 ]
 
 #Layout do CRUD final com um separador
