@@ -56,12 +56,14 @@ def appendData(data):
     print('Data Inserted')
     
 def deleteData(line):
+    os.chdir(r'C:\\payBills')
     database = readData()
-    database.drop(line)
-    data = data.to_json('allDataBills.json')
+    database = database.drop(line)
+    database.to_json('allDataBills.json')
     print('Data deleted')
 
 def modifyngData(data):
+    os.chdir(r'C:\\payBills')
     database = readData()
     database.update(data)
     data = data.to_json('allDataBills.json')

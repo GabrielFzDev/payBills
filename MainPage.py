@@ -9,6 +9,7 @@ def timeNow():
 
 def tableFormat():
     allData = bd.readData()
+    allData['snapshot'] = pd.to_datetime(allData['snapshot'],unit='ms')
     allData = allData.to_dict(orient='split')
 
     return allData
@@ -35,10 +36,10 @@ sg.theme('DarkGrey13')
 newValues = [
     [sg.Text(timeNow(),key='LabelDatetime')],
     
-    [sg.Text('Item',key='LabelItem',font='Arial')],
+    [sg.Text('Compra',key='LabelItem',font='Arial')],
     [sg.Input('',(30,50),key='inputItem')],
 
-    [sg.Text('Valor do Item',key='LabelValor',font='Arial')],
+    [sg.Text('Valor da Compra',key='LabelValor',font='Arial')],
     [sg.Spin([i for i in range(1,3000)], size=(10,50),initial_value=10.90, k='SpinNumberValue')],
 
     [sg.Text('Cartao Utlizado',font='Arial')],
@@ -54,11 +55,12 @@ newValues = [
 ]
 
 tableValues = [
-    [sg.Table(allData['data'],headings=allData['columns'],key='table',size=(120,20),enable_click_events=True)]
+    [sg.Table(allData['data'],headings=allData['columns'],key='table',size=(170,18),enable_click_events=True)],
+    [sg.Button('Modify',size=(20,1)),sg.Button('Delete',key='deleteLine',enable_events=True,size=(20,1))]
 ]
 
 layout = [
-    [sg.Column(newValues),sg.VSeparator(),sg.Column(tableValues)]
+    [sg.Column(newValues),sg.VSeparator(),sg.Column(tableValues)],
 ]
 window = sg.Window("",layout)
 
@@ -73,15 +75,23 @@ while True:
     if event == 'ParcelasNao':
         parcelas = 1
     if event == 'Submit':
-        df = {
+        df = [{
         'item':values['inputItem'],
         'valor':values['SpinNumberValue'],
         'cartao':values['Cards'],
         'dia':values['-IN2-'],
         'parcelas':parcelas,
         'snapshot':datetime.datetime.now()
-        }
+        }]
         bd.appendData(pd.DataFrame(df))
+        allData = tableFormat()
+        window['table'].update(allData['data'])
+    if type(event) == tuple:
+        clickedIndex = event[2][0]
+    if event == 'deleteLine':
+        bd.deleteData(clickedIndex)
+        allData = tableFormat()
+        window['table'].update(allData['data'])
     print(event,values)
     
 window.close()
