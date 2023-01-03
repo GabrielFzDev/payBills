@@ -82,13 +82,17 @@ tableValues = [
     [sg.Button('Modify',size=(20,1),button_color='#23211c'),sg.Button('Delete',key='deleteLine',enable_events=True,size=(20,1),button_color='#231c21')]
 ]
 
-metas = [
+metasValues = [
     [sg.Text("Meta de 30 reais por dia",auto_size_text=True,font='ARIAL 20',text_color='#ffffff')],
     [sg.Text(f"Gasto por dia: {totalValue() / int(datetime.datetime.strftime(datetime.datetime.now(),'%d'))}\n",auto_size_text=True,font='ARIAL 12',text_color='#ffffff')],
     [sg.HSeparator()],
     [sg.Text(f"\nCartões com mais gastos\n{forEach('cartao')}",auto_size_text=True,font='ARIAL 12',text_color='#ffffff')],
     [sg.Text(f"\nLojas com mais gastos\n{forEach('item')}",auto_size_text=True,font='ARIAL 12',text_color='#ffffff')],
     [sg.Text(f"\nGasto Total\n{totalValue()}",auto_size_text=True,font='ARIAL 12',text_color='#ffffff')]
+]
+
+graphValues = [
+    [sg.Image(bd.getImageGraph())]
 ]
 
 #Layout do CRUD final com um separador
@@ -98,7 +102,7 @@ layoutCRUD = [
 
 #Layout de Insigths com separador
 layoutInsigths = [
-    [sg.Column(metas)]
+    [sg.Column(metasValues),sg.Column(graphValues)]
 ]
 
 layout = [
